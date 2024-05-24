@@ -19,7 +19,7 @@ public final class SortDataModel {
     private final String sortField;
 
     /**
-     * The sort order to apply {@link SortOrder};
+     * The sort order to apply {@link SortOrder}.
      */
     private final SortOrder sortOrder;
 
