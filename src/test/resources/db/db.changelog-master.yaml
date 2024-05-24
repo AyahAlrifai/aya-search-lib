@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Ayah Refai
+      context: h2
+      changes:
+        - sqlFile:
+            path: db/changelog/changes/0.0.1/h2/init.sql
