@@ -15,6 +15,7 @@ public enum Operation {
     GREATER_THAN_EQUAL,
     BETWEEN,
     LIKE,
+    NOT_LIKE,
     IS_NULL,
     IS_NOT_NULL,
     IN,

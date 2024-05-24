@@ -8,5 +8,6 @@ package com.aya.search.model;
  */
 public enum Condition {
     AND,
-    OR
+    OR,
+    NOT
 }

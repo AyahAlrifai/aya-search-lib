@@ -18,8 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import java.time.LocalDate;
 
 import static com.aya.search.model.FilterCriteria.Condition.condition;
-import static com.aya.search.model.FilterGroup.Filter.and;
-import static com.aya.search.model.FilterGroup.Filter.or;
+import static com.aya.search.model.FilterGroup.Filter.*;
 import static com.aya.search.model.SortDataModel.Sort.asc;
 import static com.aya.search.model.SortDataModel.Sort.desc;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -648,5 +647,40 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
         Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
         assertEquals(page.getTotalElements(), 2);
+    }
+
+    @Test
+    @DisplayName("Not Like")
+    public void test49() {
+        DataManipulationModel dataManipulationModel = new DataManipulationModel();
+        dataManipulationModel.setCriteria(condition("firstName", Operation.NOT_LIKE, "%Aya%"));
+        GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
+        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+        assertEquals(page.getTotalElements(), 19);
+    }
+
+    @Test
+    @DisplayName("NOT Condition 1")
+    public void test50() throws JsonProcessingException {
+        DataManipulationModel dataManipulationModel = new DataManipulationModel();
+        dataManipulationModel.setCriteria(
+                and(
+                        not(
+                                or(
+                                    condition("id", Operation.IN, 1, 2, 3, 4),
+                                    condition("firstName", Operation.LIKE, "%a%")
+                                )
+                        ),
+                        not(
+                                or(
+                                    condition("id", Operation.IN, 11, 12, 13, 14),
+                                    condition("firstName", Operation.LIKE, "%s%")
+                                )
+                        )
+                )
+        );
+        GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
+        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+        assertEquals(page.getTotalElements(), 1);
     }
 }

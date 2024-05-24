@@ -182,6 +182,7 @@ public class GeneralSpecification<T> implements Specification<T> {
                 case IN -> condition = fieldPath.in(fieldValues);
                 case NOT_IN -> condition = criteriaBuilder.not(fieldPath.in(fieldValues));
                 case LIKE -> condition = criteriaBuilder.like((Path<String>) fieldPath, "%" + fieldValues[0] + "%");
+                case NOT_LIKE -> condition =  criteriaBuilder.not(criteriaBuilder.like((Path<String>) fieldPath, "%" + fieldValues[0] + "%"));
                 case IS_NULL -> condition = criteriaBuilder.isNull(fieldPath);
                 case IS_NOT_NULL -> condition = criteriaBuilder.isNotNull(fieldPath);
                 case IS_TRUE -> condition = criteriaBuilder.equal(fieldPath, true);
@@ -203,8 +204,10 @@ public class GeneralSpecification<T> implements Specification<T> {
             Predicate[] predicateArray = predicates.toArray(new Predicate[0]);
             if (filterGroup.getCondition().equals(Condition.OR)) {
                 predicate = criteriaBuilder.or(predicateArray);
-            } else {
+            } else if(filterGroup.getCondition().equals(Condition.AND)) {
                 predicate = criteriaBuilder.and(predicateArray);
+            } else {
+                predicate = criteriaBuilder.not(predicateArray[0]);
             }
             return predicate;
         }

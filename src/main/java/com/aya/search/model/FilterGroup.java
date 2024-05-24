@@ -55,5 +55,15 @@ public final class FilterGroup implements Filter {
         public static FilterGroup or(final com.aya.search.model.Filter... criteria) {
             return new FilterGroup(Condition.OR, List.of(criteria));
         }
+
+        /**
+         * create or condition.
+         *
+         * @param criteria criteria
+         * @return FilterGroup
+         */
+        public static FilterGroup not(final com.aya.search.model.Filter criteria) {
+            return new FilterGroup(Condition.NOT, List.of(criteria));
+        }
     }
 }
