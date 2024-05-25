@@ -14,11 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
 import java.time.LocalDate;
 
 import static com.aya.search.model.FilterCriteria.Condition.condition;
-import static com.aya.search.model.FilterGroup.Filter.*;
+import static com.aya.search.model.FilterGroup.Filter.and;
+import static com.aya.search.model.FilterGroup.Filter.not;
+import static com.aya.search.model.FilterGroup.Filter.or;
 import static com.aya.search.model.SortDataModel.Sort.asc;
 import static com.aya.search.model.SortDataModel.Sort.desc;
 import static org.junit.jupiter.api.Assertions.assertEquals;

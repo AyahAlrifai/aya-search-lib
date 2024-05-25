@@ -1,6 +1,8 @@
 package com.aya.search.model;
 
 import lombok.Getter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,8 +44,14 @@ public final class FilterGroup implements Filter {
          * @param criteria criteria
          * @return FilterGroup
          */
-        public static FilterGroup and(final com.aya.search.model.Filter... criteria) {
-            return new FilterGroup(Condition.AND, List.of(criteria));
+        public static FilterGroup and(final com.aya.search.model.Filter criteria1,
+                                      final com.aya.search.model.Filter criteria2,
+                                      final com.aya.search.model.Filter... criteria) {
+            List<com.aya.search.model.Filter> filters = new ArrayList<>();
+            filters.add(criteria1);
+            filters.add(criteria2);
+            filters.addAll(Arrays.asList(criteria));
+            return new FilterGroup(Condition.AND, filters);
         }
 
         /**
@@ -52,8 +60,14 @@ public final class FilterGroup implements Filter {
          * @param criteria criteria
          * @return FilterGroup
          */
-        public static FilterGroup or(final com.aya.search.model.Filter... criteria) {
-            return new FilterGroup(Condition.OR, List.of(criteria));
+        public static FilterGroup or(final com.aya.search.model.Filter criteria1,
+                                      final com.aya.search.model.Filter criteria2,
+                                      final com.aya.search.model.Filter... criteria) {
+            List<com.aya.search.model.Filter> filters = new ArrayList<>();
+            filters.add(criteria1);
+            filters.add(criteria2);
+            filters.addAll(Arrays.asList(criteria));
+            return new FilterGroup(Condition.OR, filters);
         }
 
         /**
