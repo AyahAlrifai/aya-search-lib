@@ -12,14 +12,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.aya.search.model.FilterCriteria.Condition.condition;
-import static com.aya.search.model.FilterGroup.Filter.and;
-import static com.aya.search.model.FilterGroup.Filter.not;
-import static com.aya.search.model.FilterGroup.Filter.or;
+import static com.aya.search.model.FilterGroup.Filter.*;
 import static com.aya.search.model.SortDataModel.Sort.asc;
 import static com.aya.search.model.SortDataModel.Sort.desc;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,8 +37,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("id", Operation.EQUAL, 1L));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 1);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 1);
     }
 
     @Test
@@ -49,8 +47,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("community.id", Operation.EQUAL, 5L));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 4);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 4);
     }
 
     @Test
@@ -59,8 +57,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("community", Operation.IS_NULL));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 3);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 3);
     }
 
     @Test
@@ -69,8 +67,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("students.id", Operation.IN, 1, 2));
         GeneralSpecification<Community> communityGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Community> page = communityRepository.findAll(communityGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 2);
+        List<Community> communities = communityRepository.findAll(communityGeneralSpecification);
+        assertEquals(communities.size(), 2);
     }
 
     @Test
@@ -79,8 +77,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("id", Operation.IN));
         GeneralSpecification<Community> communityGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Community> page = communityRepository.findAll(communityGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 0);
+        List<Community> communities = communityRepository.findAll(communityGeneralSpecification);
+        assertEquals(communities.size(), 0);
     }
 
     @Test
@@ -89,8 +87,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("firstName", Operation.LIKE, "%Aya%"));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 1);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 1);
     }
 
     @Test
@@ -99,8 +97,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("gpaLetter", Operation.IN, "A", "A-", "A+"));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 13);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 13);
     }
 
     @Test
@@ -109,8 +107,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("gpaLetter", Operation.NOT_IN, "A", "A-", "A+"));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 7);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 7);
     }
 
     @Test
@@ -119,8 +117,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("isFullTime", Operation.IS_TRUE));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 18);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 18);
     }
 
     @Test
@@ -129,8 +127,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("isFullTime", Operation.IS_FALSE));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 2);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 2);
     }
 
     @Test
@@ -139,8 +137,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("gpa", Operation.EQUAL, 3.2));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 2);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 2);
     }
 
     @Test
@@ -149,8 +147,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("gpa", Operation.GREATER_THAN, 3.2));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 15);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 15);
     }
 
     @Test
@@ -159,8 +157,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("gpa", Operation.GREATER_THAN_EQUAL, 3.2));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 17);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 17);
     }
 
     @Test
@@ -169,8 +167,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("gpa", Operation.LESS_THAN, 3.2));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 3);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 3);
     }
 
     @Test
@@ -179,8 +177,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("gpa", Operation.LESS_THAN_EQUAL, 3.2));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 5);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 5);
     }
 
     @Test
@@ -189,8 +187,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("dateOfBirth", Operation.EQUAL, LocalDate.of(1997, 5, 7)));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 1);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 1);
     }
 
     @Test
@@ -199,8 +197,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("dateOfBirth", Operation.GREATER_THAN, LocalDate.of(1997, 5, 7)));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 19);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 19);
     }
 
     @Test
@@ -209,8 +207,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("address", Operation.IS_EMPTY_STRING));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 7);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 7);
     }
 
     @Test
@@ -219,8 +217,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("address", Operation.IS_NOT_EMPTY_STRING));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 13);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 13);
     }
 
     @Test
@@ -229,8 +227,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("gpa", Operation.BETWEEN, 3.2, 3.9));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 17);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 17);
     }
 
     @Test
@@ -240,8 +238,8 @@ class GeneralSpecificationTest {
         dataManipulationModel.setCriteria(condition("enrollmentDate", Operation.BETWEEN, LocalDate.of(2022, 2, 15),
                 LocalDate.of(2022, 7, 1)));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 5);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 5);
     }
 
     @Test
@@ -250,8 +248,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("students.lastName", Operation.LIKE, "Ri%"));
         GeneralSpecification<Community> communityGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Community> page = communityRepository.findAll(communityGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 2);
+        List<Community> communities = communityRepository.findAll(communityGeneralSpecification);
+        assertEquals(communities.size(), 2);
     }
 
     @Test
@@ -260,8 +258,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("students.lastName", Operation.LIKE, "Ri%"));
         GeneralSpecification<Community> communityGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Community> page = communityRepository.findAll(communityGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 2);
+        List<Community> communities = communityRepository.findAll(communityGeneralSpecification);
+        assertEquals(communities.size(), 2);
     }
 
     @Test
@@ -272,7 +270,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "The value a is not compatible with type class java.lang.Long");
     }
@@ -285,7 +283,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "The value 05-05-2022 is not compatible with type class java.time.LocalDate");
     }
@@ -298,7 +296,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "The value 3.7 is not compatible with type class java.lang.Long");
     }
@@ -311,7 +309,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "The number of field values [3.7] are not compatible with operation IS_NULL");
     }
@@ -324,7 +322,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "The number of field values [3.7] are not compatible with operation IS_NOT_NULL");
     }
@@ -337,7 +335,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "The number of field values [3.7] are not compatible with operation IS_EMPTY_STRING");
     }
@@ -350,7 +348,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "The number of field values [3.7] are not compatible with operation IS_NOT_EMPTY_STRING");
     }
@@ -363,7 +361,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "Could not resolve attribute GPA of class com.aya.search.entity.Student.");
     }
@@ -376,7 +374,7 @@ class GeneralSpecificationTest {
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
 
         Exception exception = assertThrows(Exception.class, () -> {
-            studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
+            studentRepository.findAll(studentGeneralSpecification);
         });
         assertEquals(exception.getMessage(), "Could not resolve attribute Teacher of class com.aya.search.entity.Community.");
     }
@@ -391,8 +389,8 @@ class GeneralSpecificationTest {
                         condition("gpa", Operation.GREATER_THAN, 3.5)
                 ));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getTotalElements(), 5);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 5);
     }
 
     @Test
@@ -407,8 +405,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getTotalElements(), 3);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 3);
     }
 
     @Test
@@ -423,8 +421,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getTotalElements(), 13);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 13);
     }
 
     @Test
@@ -438,8 +436,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getTotalElements(), 8);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 8);
     }
 
     @Test
@@ -457,8 +455,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getTotalElements(), 6);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 6);
     }
 
     @Test
@@ -476,8 +474,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getTotalElements(), 7);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 7);
     }
 
     @Test
@@ -496,8 +494,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getTotalElements(), 10);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 10);
     }
 
     @Test
@@ -518,8 +516,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getTotalElements(), 12);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 12);
     }
 
     @Test
@@ -528,8 +526,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setSortModel(asc("gpa"));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getContent().get(0).getGpa(), 3.0);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.get(0).getGpa(), 3.0);
     }
 
     @Test
@@ -538,8 +536,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setSortModel(desc("gpa"));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getContent().get(0).getGpa(), 3.9);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.get(0).getGpa(), 3.9);
     }
 
     @Test
@@ -548,9 +546,9 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setSortModel(desc("gpa"), asc("firstName"));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getContent().get(0).getGpa(), 3.9);
-        assertEquals(students.getContent().get(0).getFirstName(), "Alice");
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.get(0).getGpa(), 3.9);
+        assertEquals(students.get(0).getFirstName(), "Alice");
     }
 
     @Test
@@ -559,9 +557,9 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setSortModel(asc("gpa"), desc("firstName"));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> students = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(students.getContent().get(0).getGpa(), 3.0);
-        assertEquals(students.getContent().get(0).getFirstName(), "David");
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.get(0).getGpa(), 3.0);
+        assertEquals(students.get(0).getFirstName(), "David");
     }
 
     @Test
@@ -582,8 +580,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 3);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 3);
     }
 
     @Test
@@ -604,8 +602,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 5);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 5);
     }
 
     @Test
@@ -624,8 +622,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 19);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 19);
     }
 
     @Test
@@ -646,8 +644,8 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 2);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 2);
     }
 
     @Test
@@ -656,8 +654,8 @@ class GeneralSpecificationTest {
         DataManipulationModel dataManipulationModel = new DataManipulationModel();
         dataManipulationModel.setCriteria(condition("firstName", Operation.NOT_LIKE, "%Aya%"));
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 19);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 19);
     }
 
     @Test
@@ -681,7 +679,7 @@ class GeneralSpecificationTest {
                 )
         );
         GeneralSpecification<Student> studentGeneralSpecification = new GeneralSpecification<>(dataManipulationModel);
-        Page<Student> page = studentRepository.findAll(studentGeneralSpecification, PageRequest.of(0, 10));
-        assertEquals(page.getTotalElements(), 1);
+        List<Student> students = studentRepository.findAll(studentGeneralSpecification);
+        assertEquals(students.size(), 1);
     }
 }
