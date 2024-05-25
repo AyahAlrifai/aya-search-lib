@@ -3,7 +3,7 @@ package com.aya.search.model;
 import lombok.Getter;
 
 /**
- * search data model.
+ * Filter Criteria.
  *
  * @author Ayah Refai
  * @since 03/04/2024
