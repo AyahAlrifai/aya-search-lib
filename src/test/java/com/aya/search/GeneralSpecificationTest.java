@@ -668,14 +668,14 @@ class GeneralSpecificationTest {
                 and(
                         not(
                                 or(
-                                    condition("id", Operation.IN, 1, 2, 3, 4),
-                                    condition("firstName", Operation.LIKE, "%a%")
+                                        condition("id", Operation.IN, 1, 2, 3, 4),
+                                        condition("firstName", Operation.LIKE, "%a%")
                                 )
                         ),
                         not(
                                 or(
-                                    condition("id", Operation.IN, 11, 12, 13, 14),
-                                    condition("firstName", Operation.LIKE, "%s%")
+                                        condition("id", Operation.IN, 11, 12, 13, 14),
+                                        condition("firstName", Operation.LIKE, "%s%")
                                 )
                         )
                 )

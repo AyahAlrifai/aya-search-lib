@@ -280,6 +280,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>, JpaSpec
 ```
 
 ### StudentService.java
+
 ```java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -287,7 +288,6 @@ import com.aya.search.entity.Student;
 import com.aya.search.model.DataManipulationModel;
 import com.aya.search.model.Operation;
 import com.aya.search.repository.StudentRepository;
-import com.aya.search.specification.GeneralSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
