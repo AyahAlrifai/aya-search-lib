@@ -12,7 +12,7 @@
 
     <groupId>com.aya.specification</groupId>
     <artifactId>aya-search-lib</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>aya-search-lib</name>
